@@ -1,0 +1,41 @@
+{
+  "name": "stocknews_backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon --exec babel-node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dungtruongtien/stocknews_backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dungtruongtien/stocknews_backend/issues"
+  },
+  "homepage": "https://github.com/dungtruongtien/stocknews_backend#readme",
+  "dependencies": {
+    "apollo-server-express": "^2.16.1",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "graphql-tools": "^6.0.18",
+    "lodash.merge": "^4.6.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.11.0",
+    "@babel/node": "^7.10.5",
+    "@babel/preset-env": "^7.11.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.7.0",
+    "eslint-config-airbnb-base": "^5.0.1",
+    "eslint-plugin-async-await": "0.0.0",
+    "eslint-plugin-import": "^1.8.1",
+    "eslint-scope": "^5.0.0",
+    "nodemon": "^2.0.4"
+  }
+}
