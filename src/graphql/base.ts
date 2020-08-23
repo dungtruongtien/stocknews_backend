@@ -15,7 +15,7 @@ const resolvers = {
     name: () => 'Stocknews'
   },
   Mutation: {
-    sayHello: (_, { name }) => `Hello ${name}`
+    sayHello: (_: any, { name }: { name: string }) => `Hello ${name}`
   }
 };
 
