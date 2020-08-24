@@ -1,5 +1,5 @@
 import { Client } from '@elastic/elasticsearch';
-import { IStockNews } from '../common/interface';
+import { IStockNews, INewsQueryInput } from '../common/interface';
 
 interface IEsClient {
   search?: any;
@@ -11,10 +11,21 @@ export default class StockNewsService {
     this.esClient = esClient;
   }
 
-  async getStockNews() {
+  async getStockNews({ from, size }: INewsQueryInput) {
     const result = await this.esClient.search({
-      index: 'stocknews'
+      index: 'stocknews',
+      body: {
+        sort: [{ createdDate: 'desc' }],
+        from,
+        size
+      }
     });
-    return result.body.hits.hits.map(({ _source }: {_source: IStockNews}) => ({ ..._source }));
+    return {
+      data: result.body.hits.hits.map(({ _source }: { _source: IStockNews }) => ({ ..._source })),
+      pageInfo: {
+        total: result.body.hits.total.value,
+        currentPage: from && size ? Math.floor(from / size) + 1 : 1
+      }
+    };
   }
 }

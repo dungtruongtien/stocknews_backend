@@ -2,19 +2,27 @@ import { gql } from 'apollo-server-express';
 
 export default gql`
   extend type Query {
-    books: [Book]
-    news: StockNewsPayload 
+    news(
+      from: Int
+      size: Int
+      sort: [StockNewsSort]
+    ): StockNewsPayload 
   }
 
-  type Book {
-    title: String
-    author: String
+  input StockNewsSort {
+    created: SortType
   }
 
   type StockNewsPayload {
     status: Int
     message: String
+    pageInfo: PageInfo
     data: [StockNews]
+  }
+
+  type PageInfo {
+    total: Int
+    currentPage: Int
   }
 
   type StockNews {
@@ -23,5 +31,6 @@ export default gql`
     originLink: String
     shortDescription: String
     createdDate: Date
+    image: String
   }
 `;
