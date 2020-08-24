@@ -22,5 +22,6 @@ export default gql`
     title: String
     originLink: String
     shortDescription: String
+    createdDate: Date
   }
 `;
