@@ -3,14 +3,19 @@ import { gql } from 'apollo-server-express';
 export default gql`
   extend type Query {
     news(
-      from: Int
-      size: Int
+      filter: StockNewsFilter
       sort: [StockNewsSort]
     ): StockNewsPayload 
   }
 
   input StockNewsSort {
-    created: SortType
+    createdDate: SortType
+    publishedDate: SortType
+  }
+
+  input StockNewsFilter {
+    from: Int
+    size: Int
   }
 
   type StockNewsPayload {
@@ -27,5 +32,6 @@ export default gql`
     shortDescription: String
     createdDate: Date
     image: String
+    publishedDate: Date
   }
 `;

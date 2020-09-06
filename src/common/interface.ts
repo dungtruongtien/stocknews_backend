@@ -7,18 +7,23 @@ export interface IStockNews {
     image: string
 }
 export interface INewsQueryInput {
+    filter?: INewsFilterInput
+    sort?: string
+}
+
+interface INewsFilterInput {
     from?: number
     size?: number
 }
 
-export interface IStockTradingHistoryOptions {
+export interface IStockTradingHistoryFilter {
     limit: number
     page: number
 }
 
 export interface IStockTradingHistoryParams {
     tradingKey: string
-    options: IStockTradingHistoryOptions
+    filter: IStockTradingHistoryFilter
 }
 
 export interface IStockInfo {

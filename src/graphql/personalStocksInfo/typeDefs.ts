@@ -2,13 +2,18 @@ import { gql } from 'apollo-server-express';
 
 export default gql`
   extend type Query {
-    personalStocksName: PersonalStockNamePayload
-    stockHistory(tradingKey: String!, options: StockTradingHistoryOptionsInput): StockHistoryPayload
+    stockTradingSessions(filter: StockTradingSessionsFilter): StockTradingSessionsPayload
+    stockHistory(tradingKey: String!, filter: StockTradingHistoryOptionsInput): StockHistoryPayload
   }
 
   input StockTradingHistoryOptionsInput {
-    limit: Int
     page: Int
+    limit: Int
+  }
+
+  input StockTradingSessionsFilter {
+    page: Int
+    limit: Int
   }
 
   type StockHistoryPayload {
@@ -36,15 +41,20 @@ export default gql`
     updatedAt: Date
   }
 
-  type PersonalStockNamePayload {
+  type StockTradingSessionsPayload {
     status: Int
     message: String
     pageInfo: PageInfo
-    data: [PersonalStockName]
+    data: [StockTradingSessions]
   }
 
-  type PersonalStockName {
+  type StockTradingSessions {
     _id: String
     stock: String
+    createdAt: Date
+    tradingKey: String
+    status: String
+    totalProfitOrLostAmount: Int
+    totalProfitOrLostPercent: Float
   }
 `;

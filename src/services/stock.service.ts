@@ -1,4 +1,13 @@
-import { IStockTradingHistoryOptions } from '../common/interface';
+import { IStockTradingHistoryFilter } from '../common/interface';
+
+interface IStockTradingSessionInput {
+  filter: IStockTradingSessionFilterInput
+}
+
+interface IStockTradingSessionFilterInput {
+  limit: number
+  page: number
+}
 
 export default class StockService {
   private PersonalStockModel: any;
@@ -6,23 +15,43 @@ export default class StockService {
     this.PersonalStockModel = PersonalStockModel;
   }
 
-  async getPersonalStocksName() {
-    const result = await this.PersonalStockModel.aggregate([
-      { $group: { _id: '$tradingKey', stock: { $first: '$stock' } } }
-    ]);
-    return { pageInfo: null, data: result };
+  async stockTradingSessions({ filter }: IStockTradingSessionInput) {
+    const { limit, page } = filter;
+    const skip = (page - 1) * limit;
+    const total = await this.PersonalStockModel.countDocuments({ action: 'buy' });
+    const stocks = await this.PersonalStockModel.find({ action: 'buy' })
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+    const listTradingKey = stocks.map((stock: any) => stock.tradingKey);
+    const stockSoldInfo = await this.PersonalStockModel.find({ tradingKey: { $in: listTradingKey } })
+      .sort({ createdAt: -1 });
+    const stockInfo = stocks.map((stock: any) => {
+      let totalProfitOrLostAmount = 0;
+      let totalProfitOrLostPercent = 0;
+      let status = stock.status;
+      const currentStockSoldInfo = stockSoldInfo.find((st: any) => st.tradingKey === stock.tradingKey);
+      if (currentStockSoldInfo) {
+        const { stockTotalClosingPrice, stockTotalTradePrice, profitOrLostPercent } = currentStockSoldInfo;
+        totalProfitOrLostAmount = stockTotalClosingPrice - stockTotalTradePrice;
+        totalProfitOrLostPercent = profitOrLostPercent;
+        status = currentStockSoldInfo.status;
+      }
+      return {
+        ...stock.toJSON(),
+        totalProfitOrLostAmount,
+        totalProfitOrLostPercent,
+        status
+      };
+    });
+    return { pageInfo: { total, currentPage: page }, data: stockInfo };
   }
 
-  async getStockTradingHistory(tradingKey: string, options: IStockTradingHistoryOptions) {
-    const { limit, page } = options;
+  async getStockTradingHistory(tradingKey: string, filter: IStockTradingHistoryFilter) {
+    const { limit, page } = filter;
     const skip = (page - 1) * limit;
-<<<<<<< HEAD
-    const result = await this.PersonalStockModel.find({ tradingKey }).limit(limit).skip(skip);
-    const total = await this.PersonalStockModel.count();
-=======
     const result = await this.PersonalStockModel.find({ tradingKey }).sort({ createdAt: -1 }).limit(limit).skip(skip);
-    const total = await this.PersonalStockModel.countDocuments();
->>>>>>> get stock info
+    const total = await this.PersonalStockModel.countDocuments({ tradingKey });
     return { pageInfo: { total, currentPage: page }, data: result };
   }
 }

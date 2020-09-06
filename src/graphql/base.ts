@@ -1,4 +1,5 @@
 import { gql } from 'apollo-server-express';
+import { SORT_TYPE } from '../config/constant';
 
 const typeDefs = gql`
   scalar Date
@@ -28,6 +29,9 @@ const resolvers = {
   },
   Mutation: {
     sayHello: (_: any, { name }: { name: string }) => `Hello ${name}`
+  },
+  SortType: {
+    ...SORT_TYPE
   }
 };
 

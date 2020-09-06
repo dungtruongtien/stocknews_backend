@@ -4,9 +4,9 @@ import { IStockTradingHistoryParams } from '../../common/interface';
 
 export default {
   Query: {
-    personalStocksName: async (_: RootFieldFilter, args: any, { PersonalStockInfoModel }: any) => {
+    stockTradingSessions: async (_: RootFieldFilter, args: any, { PersonalStockInfoModel }: any) => {
       const stockNewsService = new StockService(PersonalStockInfoModel);
-      const { data, pageInfo } = await stockNewsService.getPersonalStocksName();
+      const { data, pageInfo } = await stockNewsService.stockTradingSessions(args);
       return {
         status: 200,
         message: 'Success',
@@ -15,9 +15,9 @@ export default {
       };
     },
     stockHistory: async (_: RootFieldFilter, args: IStockTradingHistoryParams, { PersonalStockInfoModel }: any) => {
-      const { tradingKey, options } = args;
+      const { tradingKey, filter } = args;
       const stockNewsService = new StockService(PersonalStockInfoModel);
-      const { data, pageInfo } = await stockNewsService.getStockTradingHistory(tradingKey, options);
+      const { data, pageInfo } = await stockNewsService.getStockTradingHistory(tradingKey, filter);
       return {
         status: 200,
         message: 'Success',

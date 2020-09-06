@@ -11,11 +11,12 @@ export default class StockNewsService {
     this.esClient = esClient;
   }
 
-  async getStockNews({ from, size }: INewsQueryInput) {
+  async getStockNews({ filter = { from: 0, size: 10 }, sort }: INewsQueryInput) {
+    const { from, size } = filter;
     const result = await this.esClient.search({
       index: 'stocknews',
       body: {
-        sort: [{ createdDate: 'desc' }],
+        sort,
         from,
         size
       }
