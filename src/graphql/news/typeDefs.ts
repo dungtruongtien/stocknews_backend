@@ -20,11 +20,6 @@ export default gql`
     data: [StockNews]
   }
 
-  type PageInfo {
-    total: Int
-    currentPage: Int
-  }
-
   type StockNews {
     link: String
     title: String

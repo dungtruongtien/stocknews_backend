@@ -7,6 +7,11 @@ const typeDefs = gql`
       name: String
   }
 
+  type PageInfo {
+    total: Int
+    currentPage: Int
+  }
+
   enum SortType {
     ASC
     DESC
