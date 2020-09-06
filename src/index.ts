@@ -14,6 +14,8 @@ async function init() {
   // Initialize the app
   const app = express();
 
+  app.use(express.static('public'));
+
   const context = () => ({
     esClient,
     PersonalStockInfoModel
@@ -21,6 +23,7 @@ async function init() {
 
   const server = new ApolloServer({ schema, context });
 
+  server.applyMiddleware({ app, path: '/stockiql' });
 
   server.applyMiddleware({ app, path: '/stockiql' });
 
