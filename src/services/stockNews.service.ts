@@ -1,21 +1,18 @@
 import { Client } from '@elastic/elasticsearch';
 import { IStockNews, INewsQueryInput } from '../common/interface';
 
-interface IEsClient {
-  search?: any;
-}
-
 export default class StockNewsService {
-  private esClient: IEsClient = {};
+  private esClient: Client;
   constructor(esClient: Client) {
     this.esClient = esClient;
   }
 
-  async getStockNews({ filter = { from: 0, size: 10 }, sort }: INewsQueryInput) {
-    const { from, size } = filter;
+  async getStockNews({ filter = { query: {}, from: 0, size: 10 }, sort }: INewsQueryInput) {
+    const { from, size, query } = filter;
     const result = await this.esClient.search({
       index: 'stocknews',
       body: {
+        query,
         sort,
         from,
         size

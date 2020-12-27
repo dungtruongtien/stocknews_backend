@@ -16,6 +16,26 @@ export default gql`
   input StockNewsFilter {
     from: Int
     size: Int
+    query: StockNewsInputQuery
+  }
+
+  # This Input only for Elasticsearch Query.
+  input StockNewsShouldFilter {
+    should: [StockNewsShouldFilterOptions]
+  }
+
+  input StockNewsShouldFilterOptions {
+    match: StockNewsFilterFields
+  }
+
+  input StockNewsInputQuery {
+    bool: StockNewsShouldFilter 
+  }
+
+  input StockNewsFilterFields {
+    link: String
+    title: String
+    shortDescription: String
   }
 
   type StockNewsPayload {

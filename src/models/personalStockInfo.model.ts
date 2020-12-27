@@ -1,9 +1,8 @@
 import mongoose from 'mongoose';
-import { IStockInfo } from '../common/interface';
+import { IStockInfoModel } from '../common/interface';
 
-export default mongoose.model<IStockInfo>('PersonalStockInfo', new mongoose.Schema(
+export default mongoose.model<IStockInfoModel>('PersonalStockInfo', new mongoose.Schema(
   {
-    id: String,
     tradingKey: {
       type: String,
       required: true

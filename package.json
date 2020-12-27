@@ -22,7 +22,10 @@
     "@elastic/elasticsearch": "^7.9.0",
     "apollo-server-express": "^2.16.1",
     "body-parser": "^1.19.0",
+    "date-fns": "^2.16.1",
     "express": "^4.17.1",
+    "graphql": "^15.4.0",
+    "graphql-middleware": "^4.0.2",
     "graphql-tools": "^6.0.18",
     "lodash.merge": "^4.6.2",
     "mongoose": "^5.10.3"

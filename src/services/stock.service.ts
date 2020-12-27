@@ -1,13 +1,4 @@
-import { IStockTradingHistoryFilter } from '../common/interface';
-
-interface IStockTradingSessionInput {
-  filter: IStockTradingSessionFilterInput
-}
-
-interface IStockTradingSessionFilterInput {
-  limit: number
-  page: number
-}
+import { IStockTradingHistoryFilter, IStockTradingSessionInput } from '../common/interface';
 
 export default class StockService {
   private PersonalStockModel: any;

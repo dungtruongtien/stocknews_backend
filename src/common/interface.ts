@@ -1,3 +1,5 @@
+import mongoose from 'mongoose';
+
 export interface IStockNews {
     link: string
     title: string
@@ -14,8 +16,25 @@ export interface INewsQueryInput {
 interface INewsFilterInput {
     from?: number
     size?: number
+    query?: IStockNewsInputQuery
 }
 
+interface IStockNewsInputQuery {
+    bool?: IStockNewsShouldFilter
+}
+interface IStockNewsShouldFilter {
+    should?: [IStockNewsShouldFilterOptions]
+}
+
+interface IStockNewsShouldFilterOptions {
+    match?: IStockNewsFilterFields
+}
+
+interface IStockNewsFilterFields {
+    link?: string
+    title?: string
+    shortDescription?: string
+}
 export interface IStockTradingHistoryFilter {
     limit: number
     page: number
@@ -42,4 +61,61 @@ export interface IStockInfo {
     profitOrLostPercent: number,
     createdAt: Date,
     updatedAt: Date
+}
+
+export interface IStockInfoModel extends mongoose.Document {
+    _id: string,
+    tradingKey: string,
+    stock: string,
+    action: string,
+    status: string,
+    tradingTax: number,
+    totalStockTradeAmount: number,
+    stockTradeAmount: number,
+    stockTradePrice: number,
+    stockTotalTradePrice: number,
+    closingPrice: number,
+    stockTotalClosingPrice: number,
+    profitOrLostPercent: number,
+    createdAt: Date,
+    updatedAt: Date
+}
+
+export interface IPersonalPropertyModel extends mongoose.Document {
+    price: number,
+    date: string,
+    financialPlanning: IFinancialPlanning
+}
+
+export interface IPersonalProperty {
+    id: string,
+    price: number,
+    date: any,
+    financialPlanning: IFinancialPlanning
+}
+
+interface IFinancialPlanning {
+    targetPercent: number
+    targetPrice: number
+    actualResultMonthPercent: number
+}
+
+
+export interface IStockTradingSessionInput {
+    filter: IStockTradingSessionFilterInput
+  }
+
+export interface IStockTradingSessionFilterInput {
+    limit: number
+    page: number
+  }
+
+
+export interface IPersonalPropertyQueryInput {
+    filter: IPersonalPropertyFilterInput
+  }
+
+export interface IPersonalPropertyFilterInput {
+    fromDate: Date
+    endDate: Date
 }

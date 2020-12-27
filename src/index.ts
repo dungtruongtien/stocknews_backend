@@ -2,6 +2,7 @@ import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import schema from './graphql';
 import PersonalStockInfoModel from './models/personalStockInfo.model';
+import PersonalPropertyModel from './models/personalProperty.model';
 import config from './config';
 import MongoConnection from './ext-lib/mongo';
 import EsClient from './ext-lib/es';
@@ -18,12 +19,11 @@ async function init() {
 
   const context = () => ({
     esClient,
-    PersonalStockInfoModel
+    PersonalStockInfoModel,
+    PersonalPropertyModel
   });
 
   const server = new ApolloServer({ schema, context });
-
-  server.applyMiddleware({ app, path: '/stockiql' });
 
   server.applyMiddleware({ app, path: '/stockiql' });
 
