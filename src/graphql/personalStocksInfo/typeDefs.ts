@@ -36,7 +36,7 @@ export default gql`
     stockTotalTradePrice: Int,
     closingPrice: Float,
     stockTotalClosingPrice: Int,
-    profitOrLostPercent: Float,
+    profitPercent: Float,
     createdAt: Date,
     updatedAt: Date
   }
@@ -54,7 +54,7 @@ export default gql`
     createdAt: Date
     tradingKey: String
     status: String
-    totalProfitOrLostAmount: Int
-    totalProfitOrLostPercent: Float
+    profitAmount: Int
+    profitPercent: Float
   }
 `;

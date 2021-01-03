@@ -47,7 +47,7 @@ export default mongoose.model<IStockInfoModel>('PersonalStockInfo', new mongoose
       type: Number,
       required: true
     },
-    profitOrLostPercent: {
+    profitPercent: {
       type: Number,
       required: true
     },

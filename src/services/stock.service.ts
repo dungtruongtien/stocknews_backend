@@ -18,20 +18,17 @@ export default class StockService {
     const stockSoldInfo = await this.PersonalStockModel.find({ tradingKey: { $in: listTradingKey } })
       .sort({ createdAt: -1 });
     const stockInfo = stocks.map((stock: any) => {
-      let totalProfitOrLostAmount = 0;
-      let totalProfitOrLostPercent = 0;
-      let status = stock.status;
-      const currentStockSoldInfo = stockSoldInfo.find((st: any) => st.tradingKey === stock.tradingKey);
-      if (currentStockSoldInfo) {
-        const { stockTotalClosingPrice, stockTotalTradePrice, profitOrLostPercent } = currentStockSoldInfo;
-        totalProfitOrLostAmount = stockTotalClosingPrice - stockTotalTradePrice;
-        totalProfitOrLostPercent = profitOrLostPercent;
-        status = currentStockSoldInfo.status;
+      let profitAmount = 0;
+      let { status } = stock;
+      const latestStockInfo = stockSoldInfo.find((st: any) => st.tradingKey === stock.tradingKey);
+      if (latestStockInfo) {
+        const { stockTotalClosingPrice, stockTotalTradePrice } = latestStockInfo;
+        profitAmount = stockTotalClosingPrice - stockTotalTradePrice;
+        status = latestStockInfo.status;
       }
       return {
         ...stock.toJSON(),
-        totalProfitOrLostAmount,
-        totalProfitOrLostPercent,
+        profitAmount,
         status
       };
     });

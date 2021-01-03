@@ -58,7 +58,7 @@ export interface IStockInfo {
     stockTotalTradePrice: number,
     closingPrice: number,
     stockTotalClosingPrice: number,
-    profitOrLostPercent: number,
+    profitPercent: number,
     createdAt: Date,
     updatedAt: Date
 }
@@ -76,7 +76,7 @@ export interface IStockInfoModel extends mongoose.Document {
     stockTotalTradePrice: number,
     closingPrice: number,
     stockTotalClosingPrice: number,
-    profitOrLostPercent: number,
+    profitPercent: number,
     createdAt: Date,
     updatedAt: Date
 }
