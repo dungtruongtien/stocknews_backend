@@ -19,16 +19,18 @@ export default class StockService {
       .sort({ createdAt: -1 });
     const stockInfo = stocks.map((stock: any) => {
       let profitAmount = 0;
-      let { status } = stock;
+      let { status, profitPercent } = stock;
       const latestStockInfo = stockSoldInfo.find((st: any) => st.tradingKey === stock.tradingKey);
       if (latestStockInfo) {
         const { stockTotalClosingPrice, stockTotalTradePrice } = latestStockInfo;
         profitAmount = stockTotalClosingPrice - stockTotalTradePrice;
         status = latestStockInfo.status;
+        profitPercent = latestStockInfo.profitPercent;
       }
       return {
         ...stock.toJSON(),
         profitAmount,
+        profitPercent,
         status
       };
     });
