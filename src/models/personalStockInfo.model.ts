@@ -51,6 +51,12 @@ export default mongoose.model<IStockInfoModel>('PersonalStockInfo', new mongoose
       type: Number,
       required: true
     },
+    marginFee: {
+      type: Number
+    },
+    marginFeePercent: {
+      type: Number
+    },
     createdAt: {
       type: Date,
       default: Date.now

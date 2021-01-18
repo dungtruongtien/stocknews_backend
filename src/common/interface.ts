@@ -116,6 +116,5 @@ export interface IPersonalPropertyQueryInput {
   }
 
 export interface IPersonalPropertyFilterInput {
-    fromDate: Date
-    endDate: Date
+    aggType: string
 }

@@ -2,12 +2,16 @@ import { gql } from 'apollo-server-express';
 
 export default gql`
   extend type Query {
-    personalPropertySession(filter: PersonalPropertyFilter!): PersonalPropertyPayload
+    personalPropertyAgg(filter: PersonalPropertyFilter!): PersonalPropertyPayload
   }
 
   input PersonalPropertyFilter {
-    fromDate: DateTime!
-    endDate: DateTime!
+    aggType: PersonalPropertyOutputType!
+  }
+
+  enum PersonalPropertyOutputType {
+    DATE
+    MONTH
   }
 
   type PersonalPropertyPayload {
@@ -17,15 +21,7 @@ export default gql`
   }
 
   type PersonalProperty {
-    _id: String
+    text: String
     price: Int
-    date: Date
-    financialPlanning: FinancialPlanning
-  }
-
-  type FinancialPlanning {
-    targetPercent: Int
-    targetPrice: Int
-    actualResultMonthPercent: Float
   }
 `;
