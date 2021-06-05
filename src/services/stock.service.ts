@@ -20,7 +20,6 @@ export default class StockService {
     // const stockInfo = stocks.map((stock: any) => {
     //   let { status } = stock;
     //   const latestStockInfo = stockSoldInfo.find((st: any) => st.tradingKey === stock.tradingKey);
-    //   console.log('latestStockInfo-------', latestStockInfo);
     //   if (latestStockInfo) {
     //     status = latestStockInfo.status;
     //   }
@@ -40,7 +39,6 @@ export default class StockService {
     const stockInfo = stocks.map((stock: any) => {
       return { ...stock.stocks };
     });
-    console.log('stockInfo-------', stockInfo);
     return { pageInfo: { total, currentPage: page }, data: stockInfo };
   }
 

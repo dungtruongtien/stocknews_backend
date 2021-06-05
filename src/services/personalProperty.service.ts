@@ -7,7 +7,7 @@ interface IAggregateByMonthIdData {
 
 interface IAggregateByMonthData {
   _id: IAggregateByMonthIdData;
-  price: number;
+  property: any;
 }
 
 interface IAggregateByDayData {
@@ -23,11 +23,9 @@ export default class PersonalPropertyService {
   }
 
   formatAggregateByMonthData(data: IAggregateByMonthData[]) {
-    return data.sort((a, b) => {
-      return b._id.year - a._id.year & b._id.month - a._id.month;
-    }).map(property => {
-      return { text: `${property._id.month}/${property._id.year}`, price: property.price };
-    });
+    return data.map((aggData, idx) => {
+      return { text: `${aggData._id.month}/${aggData._id.year}`, price: aggData.property.price, idx };
+    }).sort((a, b) => b.idx - a.idx);
   }
 
   formatAggregateByDayData(data: IAggregateByDayData[]) {
@@ -60,7 +58,6 @@ export default class PersonalPropertyService {
 
   async aggregateByMonth() {
     const data = await this.PersonalPropertyModel.aggregate([
-      { $sort: { date: -1 } },
       {
         $group: {
           _id: {
@@ -71,20 +68,12 @@ export default class PersonalPropertyService {
               $year: '$date'
             }
           },
-          price: {
-            $last: '$price'
+          property: {
+            $last: '$$ROOT'
           }
         }
       },
-      {
-        $sort: {
-          year: 1,
-          month: 1
-        }
-      },
-      {
-        $limit: AGG_LIMITATION
-      }
+      { $sort: { 'property.date': -1 } }
     ]);
     return this.formatAggregateByMonthData(data);
   }
