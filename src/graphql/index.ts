@@ -4,19 +4,22 @@ import news from './news';
 import personalStocksInfo from './personalStocksInfo';
 import base from './base';
 import personalProperty from './personalProperty';
+import coin from './coin';
 
 export default makeExecutableSchema({
   typeDefs: [
     base.typeDefs,
     news.typeDefs,
     personalStocksInfo.typeDefs,
-    personalProperty.typeDefs
+    personalProperty.typeDefs,
+    coin.typeDefs
 
   ],
   resolvers: merge({},
     base.resolvers,
     news.resolver,
     personalStocksInfo.resolver,
-    personalProperty.resolver
+    personalProperty.resolver,
+    coin.resolver
   )
 });

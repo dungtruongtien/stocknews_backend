@@ -46,51 +46,59 @@ export interface IStockTradingHistoryParams {
 }
 
 export interface IStockInfo {
-    _id: string,
-    tradingKey: string,
-    stock: string,
-    action: string,
-    status: string,
-    tradingTax: number,
-    totalStockTradeAmount: number,
-    stockTradeAmount: number,
-    stockTradePrice: number,
-    stockTotalTradePrice: number,
-    closingPrice: number,
-    stockTotalClosingPrice: number,
-    profitPercent: number,
-    createdAt: Date,
+    _id: string
+    tradingKey: string
+    stock: string
+    action: string
+    status: string
+    tradingTax: number
+    totalStockTradeAmount: number
+    stockTradeAmount: number
+    stockTradePrice: number
+    stockTotalTradePrice: number
+    closingPrice: number
+    stockTotalClosingPrice: number
+    profitPercent: number
+    createdAt: Date
     updatedAt: Date
 }
 
 export interface IStockInfoModel extends mongoose.Document {
-    _id: string,
-    tradingKey: string,
-    stock: string,
-    action: string,
-    status: string,
-    tradingTax: number,
-    totalStockTradeAmount: number,
-    stockTradeAmount: number,
-    stockTradePrice: number,
-    stockTotalTradePrice: number,
-    closingPrice: number,
-    stockTotalClosingPrice: number,
-    profitPercent: number,
-    createdAt: Date,
+    _id: string
+    tradingKey: string
+    stock: string
+    action: string
+    status: string
+    tradingTax: number
+    totalStockTradeAmount: number
+    stockTradeAmount: number
+    stockTradePrice: number
+    stockTotalTradePrice: number
+    closingPrice: number
+    stockTotalClosingPrice: number
+    profitPercent: number
+    createdAt: Date
     updatedAt: Date
 }
 
+export interface ICoinModel extends mongoose.Document {
+    currentPrice: number
+    profit: number
+    name: string
+    abbreviations: string
+    costPrice: number
+    totalCostPrice: number
+}
 export interface IPersonalPropertyModel extends mongoose.Document {
-    price: number,
-    date: string,
+    price: number
+    date: string
     financialPlanning: IFinancialPlanning
 }
 
 export interface IPersonalProperty {
-    id: string,
-    price: number,
-    date: any,
+    id: string
+    price: number
+    date: any
     financialPlanning: IFinancialPlanning
 }
 
