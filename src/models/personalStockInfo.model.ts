@@ -3,6 +3,7 @@ import { IStockInfoModel } from '../common/interface';
 
 export default mongoose.model<IStockInfoModel>('PersonalStockInfo', new mongoose.Schema(
   {
+    id: String,
     tradingKey: {
       type: String,
       required: true
@@ -24,8 +25,7 @@ export default mongoose.model<IStockInfoModel>('PersonalStockInfo', new mongoose
       required: true
     },
     tradingTax: {
-      type: Number,
-      required: true
+      type: Number
     },
     totalStockTradeAmount: {
       type: Number,
@@ -35,6 +35,9 @@ export default mongoose.model<IStockInfoModel>('PersonalStockInfo', new mongoose
       type: Number,
       required: true
     },
+    dateStockTradePrice: {
+      type: Number
+    },
     stockTotalTradePrice: {
       type: Number,
       required: true
@@ -43,18 +46,21 @@ export default mongoose.model<IStockInfoModel>('PersonalStockInfo', new mongoose
       type: Number,
       required: true
     },
-    stockTotalClosingPrice: {
-      type: Number,
-      required: true
-    },
     profitPercent: {
       type: Number,
       required: true
     },
-    marginFee: {
+    profitAmount: {
       type: Number
     },
-    marginFeePercent: {
+    paperProfitPercent: {
+      type: Number,
+      required: true
+    },
+    paperProfitAmount: {
+      type: Number
+    },
+    tradingFee: {
       type: Number
     },
     createdAt: {

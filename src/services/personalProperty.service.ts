@@ -15,7 +15,7 @@ interface IAggregateByDayData {
   price: number;
 }
 
-const AGG_LIMITATION = 10;
+const AGG_LIMITATION = 15;
 export default class PersonalPropertyService {
   private PersonalPropertyModel: any;
   constructor(personalPropertyModel: any) {
@@ -26,7 +26,6 @@ export default class PersonalPropertyService {
     return data.sort((a, b) => {
       return b._id.year - a._id.year & b._id.month - a._id.month;
     }).map(property => {
-      console.log('property------', property);
       return { text: `${property._id.month}/${property._id.year}`, price: property.price };
     });
   }

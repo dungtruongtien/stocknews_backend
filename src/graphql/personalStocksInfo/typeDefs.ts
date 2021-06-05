@@ -24,20 +24,23 @@ export default gql`
   }
 
   type StockHistory {
-    _id: String,
-    tradingKey: String,
-    stock: String,
-    action: String,
-    status: String,
-    tradingTax: Float,
-    totalStockTradeAmount: Int,
-    stockTradeAmount: Int,
-    stockTradePrice: Float,
-    stockTotalTradePrice: Int,
-    closingPrice: Float,
-    stockTotalClosingPrice: Int,
-    profitPercent: Float,
-    createdAt: Date,
+    _id: String
+    tradingKey: String
+    stock: String
+    action: String
+    status: String
+    tradingTax: Float
+    totalStockTradeAmount: Int
+    stockTradeAmount: Int
+    stockTradePrice: Float
+    stockTotalTradePrice: Int
+    closingPrice: Float
+    stockTotalClosingPrice: Int
+    profitAmount: Int
+    profitPercent: Float
+    paperProfitAmount: Int
+    paperProfitPercent: Float
+    createdAt: Date
     updatedAt: Date
   }
 
@@ -56,5 +59,8 @@ export default gql`
     status: String
     profitAmount: Int
     profitPercent: Float
+    paperProfitAmount: Int
+    paperProfitPercent: Float
+    stockTotalTradePrice: Int
   }
 `;

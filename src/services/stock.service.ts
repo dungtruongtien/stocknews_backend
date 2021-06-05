@@ -8,32 +8,39 @@ export default class StockService {
 
   async stockTradingSessions({ filter }: IStockTradingSessionInput) {
     const { limit, page } = filter;
-    const skip = (page - 1) * limit;
+    // const skip = (page - 1) * limit;
     const total = await this.PersonalStockModel.countDocuments({ action: 'buy' });
-    const stocks = await this.PersonalStockModel.find({ action: 'buy' })
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit);
-    const listTradingKey = stocks.map((stock: any) => stock.tradingKey);
-    const stockSoldInfo = await this.PersonalStockModel.find({ tradingKey: { $in: listTradingKey } })
-      .sort({ createdAt: -1 });
+    // const stocks = await this.PersonalStockModel.find({ action: 'buy' })
+    //   .sort({ createdAt: -1 })
+    //   .skip(skip)
+    //   .limit(limit);
+    // const listTradingKey = stocks.map((stock: any) => stock.tradingKey);
+    // const stockSoldInfo = await this.PersonalStockModel.find({ tradingKey: { $in: listTradingKey } })
+    //   .sort({ createdAt: -1 });
+    // const stockInfo = stocks.map((stock: any) => {
+    //   let { status } = stock;
+    //   const latestStockInfo = stockSoldInfo.find((st: any) => st.tradingKey === stock.tradingKey);
+    //   console.log('latestStockInfo-------', latestStockInfo);
+    //   if (latestStockInfo) {
+    //     status = latestStockInfo.status;
+    //   }
+    //   return {
+    //     ...stock.toJSON(),
+    //     status
+    //   };
+    // });
+    const stocks = await this.PersonalStockModel.aggregate(
+      [
+        { $group: { _id: '$tradingKey', stocks: { $last: '$$ROOT' } } },
+        { $sort: { 'stocks.createdAt': -1 } },
+        { $skip: (page - 1) * limit },
+        { $limit: limit }
+      ]
+    );
     const stockInfo = stocks.map((stock: any) => {
-      let profitAmount = 0;
-      let { status, profitPercent } = stock;
-      const latestStockInfo = stockSoldInfo.find((st: any) => st.tradingKey === stock.tradingKey);
-      if (latestStockInfo) {
-        const { stockTotalClosingPrice, stockTotalTradePrice } = latestStockInfo;
-        profitAmount = stockTotalClosingPrice - stockTotalTradePrice;
-        status = latestStockInfo.status;
-        profitPercent = latestStockInfo.profitPercent;
-      }
-      return {
-        ...stock.toJSON(),
-        profitAmount,
-        profitPercent,
-        status
-      };
+      return { ...stock.stocks };
     });
+    console.log('stockInfo-------', stockInfo);
     return { pageInfo: { total, currentPage: page }, data: stockInfo };
   }
 
