@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
-import { IStockInfoModel } from '../common/interface';
+import { IStockTradingModel } from '../common/interface';
 
-export default mongoose.model<IStockInfoModel>('PersonalStockInfo', new mongoose.Schema(
+export default mongoose.model<IStockTradingModel>('StockTrading', new mongoose.Schema(
   {
     id: String,
     tradingKey: {
@@ -70,7 +70,7 @@ export default mongoose.model<IStockInfoModel>('PersonalStockInfo', new mongoose
     updatedAt: Date
   },
   {
-    collection: 'personal_stock_info',
+    collection: 'stock_trading',
     versionKey: false,
     strict: false
   }

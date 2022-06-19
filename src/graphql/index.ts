@@ -1,7 +1,7 @@
 import { makeExecutableSchema } from 'apollo-server-express';
 import merge from 'lodash.merge';
 import news from './news';
-import personalStocksInfo from './personalStocksInfo';
+import stockTrading from './stockTrading';
 import base from './base';
 import personalProperty from './personalProperty';
 import coin from './coin';
@@ -9,16 +9,16 @@ import coin from './coin';
 export default makeExecutableSchema({
   typeDefs: [
     base.typeDefs,
+    stockTrading.typeDefs,
     news.typeDefs,
-    personalStocksInfo.typeDefs,
     personalProperty.typeDefs,
     coin.typeDefs
 
   ],
   resolvers: merge({},
     base.resolvers,
+    stockTrading.resolver,
     news.resolver,
-    personalStocksInfo.resolver,
     personalProperty.resolver,
     coin.resolver
   )

@@ -35,50 +35,65 @@ interface IStockNewsFilterFields {
     title?: string
     shortDescription?: string
 }
-export interface IStockTradingHistoryFilter {
+
+export interface IStockTradingParams {
+    filter: IStockTradingFilter
+    offset: number
     limit: number
-    page: number
 }
 
-export interface IStockTradingHistoryParams {
+export interface IStockTradingItemParams {
+    filter: IStockTradingItemFilter
+    offset: number
+    limit: number
+}
+export interface IStockTradingItemFilter {
     tradingKey: string
-    filter: IStockTradingHistoryFilter
 }
 
-export interface IStockInfo {
+export interface IStockTradingFilter {
+}
+
+export interface IStockTradingItemFilter {
+    limit: number
+    offset: number
+}
+
+
+export interface IStockTradingModel extends mongoose.Document {
     _id: string
     tradingKey: string
-    stock: string
-    action: string
+    stockName: string
     status: string
-    tradingTax: number
-    totalStockTradeAmount: number
-    stockTradeAmount: number
-    stockTradePrice: number
-    stockTotalTradePrice: number
-    closingPrice: number
-    stockTotalClosingPrice: number
+    totalQuantity: number
+    totalAmount: number
+    investDate: Date
     profitPercent: number
+    averageStockPrice: number
     createdAt: Date
     updatedAt: Date
 }
 
-export interface IStockInfoModel extends mongoose.Document {
+
+export interface IStockTradingItemModel extends mongoose.Document {
     _id: string
     tradingKey: string
-    stock: string
     action: string
-    status: string
     tradingTax: number
-    totalStockTradeAmount: number
-    stockTradeAmount: number
-    stockTradePrice: number
-    stockTotalTradePrice: number
+    tradingAmount: number
+    tradingQuantity: number
     closingPrice: number
-    stockTotalClosingPrice: number
-    profitPercent: number
     createdAt: Date
     updatedAt: Date
+}
+
+export interface APIServiceResp {
+    pageInfo: PageInfo
+    data: any
+}
+
+interface PageInfo {
+    total: number
 }
 
 export interface ICoinModel extends mongoose.Document {
@@ -115,7 +130,7 @@ export interface IStockTradingSessionInput {
 
 export interface IStockTradingSessionFilterInput {
     limit: number
-    page: number
+    offset: number
   }
 
 

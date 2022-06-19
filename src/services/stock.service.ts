@@ -1,35 +1,37 @@
-import { IStockTradingHistoryFilter, IStockTradingSessionInput } from '../common/interface';
+import mongoose from 'mongoose';
+import {
+  APIServiceResp,
+  IStockTradingItemModel,
+  IStockTradingItemParams,
+  IStockTradingModel,
+  IStockTradingParams
+} from '../common/interface';
 
 export default class StockService {
-  private PersonalStockModel: any;
-  constructor(PersonalStockModel: any) {
-    this.PersonalStockModel = PersonalStockModel;
+  private StockTradingModel: mongoose.Model<IStockTradingModel, {}> | undefined;
+  private StockTradingItemModel: mongoose.Model<IStockTradingItemModel, {}> | undefined;
+  constructor(StockTradingModel?: mongoose.Model<IStockTradingModel>, StockTradingItemModel?: mongoose.Model<IStockTradingItemModel>) {
+    this.StockTradingModel = StockTradingModel;
+    this.StockTradingItemModel = StockTradingItemModel;
   }
 
-  async stockTradingSessions({ filter }: IStockTradingSessionInput) {
-    const { limit, page } = filter;
-    // const skip = (page - 1) * limit;
-    const total = await this.PersonalStockModel.countDocuments({ action: 'buy' });
-    const stocks = await this.PersonalStockModel.aggregate(
-      [
-        { $group: { _id: '$tradingKey', stocks: { $last: '$$ROOT' } } },
-        { $match: { 'stocks.status': 'hold' } },
-        { $sort: { 'stocks.createdAt': -1 } },
-        { $skip: (page - 1) * limit },
-        { $limit: limit }
-      ]
-    );
-    const stockInfo = stocks.map((stock: any) => {
-      return { ...stock.stocks };
-    });
-    return { pageInfo: { total, currentPage: page }, data: stockInfo };
+  async stockTradingSessions({ filter, limit, offset }: IStockTradingParams): Promise<APIServiceResp> {
+    if (!this.StockTradingModel) return Promise.reject(null);
+    const dataResp = await this.StockTradingModel.find(filter).limit(limit).skip(offset);
+    const total = await this.StockTradingModel.count(filter).limit(limit).skip(offset);
+    return {
+      pageInfo: { total },
+      data: dataResp
+    };
   }
 
-  async getStockTradingHistory(tradingKey: string, filter: IStockTradingHistoryFilter) {
-    const { limit, page } = filter;
-    const skip = (page - 1) * limit;
-    const result = await this.PersonalStockModel.find({ tradingKey }).sort({ createdAt: -1 }).limit(limit).skip(skip);
-    const total = await this.PersonalStockModel.countDocuments({ tradingKey });
-    return { pageInfo: { total, currentPage: page }, data: result };
+  async getStockTradingItems({ filter, limit, offset }: IStockTradingItemParams): Promise<APIServiceResp> {
+    if (!this.StockTradingItemModel) return Promise.reject(null);
+    const result = await this.StockTradingItemModel.find(filter).sort({ createdAt: -1 }).limit(limit).skip(offset);
+    const total = await this.StockTradingItemModel.countDocuments(filter);
+    return {
+      pageInfo: { total },
+      data: result
+    };
   }
 }

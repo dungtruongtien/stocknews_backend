@@ -2,7 +2,8 @@ import express from 'express';
 import { createServer } from 'http';
 import { ApolloServer, PubSub } from 'apollo-server-express';
 import schema from './graphql';
-import PersonalStockInfoModel from './models/personalStockInfo.model';
+import StockTradingModel from './models/stockTrading.model';
+import StockTradingModelItem from './models/stockTradingItem.model';
 import PersonalPropertyModel from './models/personalProperty.model';
 import CoinModel from './models/coin.model';
 import config from './config';
@@ -15,7 +16,6 @@ async function init() {
   await MongoConnection();
   const path = 'stockiql';
 
-  const esClient = EsClient;
   // Initialize the app
   const app = express();
 
@@ -23,9 +23,10 @@ async function init() {
 
   const context = () => {
     return {
-      esClient,
+      esClient: EsClient,
       pubsub,
-      PersonalStockInfoModel,
+      StockTradingModel,
+      StockTradingModelItem,
       PersonalPropertyModel,
       CoinModel,
       SocketClients: []

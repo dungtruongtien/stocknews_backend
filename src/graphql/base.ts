@@ -31,7 +31,6 @@ const typeDefs = gql`
 
   type PageInfo {
     total: Int
-    currentPage: Int
   }
 
   enum SortType {
