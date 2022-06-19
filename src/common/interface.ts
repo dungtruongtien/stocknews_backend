@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-
 export interface IStockNews {
     link: string
     title: string
@@ -47,6 +46,21 @@ export interface IStockTradingItemParams {
     offset: number
     limit: number
 }
+
+export interface ICreateStockTradingInput {
+    _id: mongoose.Types.ObjectId
+    tradingKey: string
+    stockName: string
+    status: string
+    totalQuantity: number
+    totalAmount: number
+    investDate: Date
+    profitPercent?: number
+    averageStockPrice?: number
+    // createdAt?: Date
+    // updatedAt?: Date
+
+}
 export interface IStockTradingItemFilter {
     tradingKey: string
 }
@@ -61,22 +75,27 @@ export interface IStockTradingItemFilter {
 
 
 export interface IStockTradingModel extends mongoose.Document {
-    _id: string
+    _id: mongoose.Types.ObjectId
     tradingKey: string
     stockName: string
     status: string
     totalQuantity: number
     totalAmount: number
     investDate: Date
-    profitPercent: number
-    averageStockPrice: number
-    createdAt: Date
-    updatedAt: Date
+    profitPercent?: number
+    averageStockPrice?: number
+    createdAt?: Date
+    updatedAt?: Date
+}
+
+export interface IIdGenModel extends mongoose.Document {
+    _id: mongoose.Types.ObjectId
+    value: number
 }
 
 
 export interface IStockTradingItemModel extends mongoose.Document {
-    _id: string
+    _id: mongoose.Types.ObjectId
     tradingKey: string
     action: string
     tradingTax: number
@@ -88,8 +107,22 @@ export interface IStockTradingItemModel extends mongoose.Document {
 }
 
 export interface APIServiceResp {
-    pageInfo: PageInfo
-    data: any
+    status: string
+    statusCode: number
+    pageInfo?: PageInfo
+    message?: string
+    data?: any
+    errorCode?: string
+}
+
+export interface IDBContext {
+    StockTradingModel: mongoose.Model<IStockTradingModel>
+    StockTradingItemModel: mongoose.Model<IStockTradingItemModel>
+    IdGen: mongoose.Model<IIdGenModel>
+}
+
+export interface IContext {
+    db: IDBContext
 }
 
 interface PageInfo {

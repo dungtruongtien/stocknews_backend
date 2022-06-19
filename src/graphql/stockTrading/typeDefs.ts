@@ -6,6 +6,10 @@ export default gql`
     stockTradingItems(filter: StockTradingItemFilterInput, limit: Int, offset: Int): StockTradingItemPayload
   }
 
+  extend type Mutation {
+    createStockTrading: String
+  }
+
   input StockTradingItemFilterInput {
     tradingKey: String!
   }

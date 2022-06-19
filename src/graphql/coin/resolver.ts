@@ -2,8 +2,6 @@ import { RootFieldFilter } from 'graphql-tools';
 import { BINANCE_CRYPTO_PROFILE_STREAM } from '../../config/constant';
 import CoinService from '../../services/coin.service';
 
-const globalSocketClient = {};
-
 export default {
   Query: {
     coins: (_: RootFieldFilter, agrs: null, { CoinModel }: any) => {

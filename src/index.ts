@@ -3,6 +3,7 @@ import { createServer } from 'http';
 import { ApolloServer, PubSub } from 'apollo-server-express';
 import schema from './graphql';
 import StockTradingModel from './models/stockTrading.model';
+import IdGen from './models/idGen.model';
 import StockTradingModelItem from './models/stockTradingItem.model';
 import PersonalPropertyModel from './models/personalProperty.model';
 import CoinModel from './models/coin.model';
@@ -25,10 +26,13 @@ async function init() {
     return {
       esClient: EsClient,
       pubsub,
-      StockTradingModel,
-      StockTradingModelItem,
-      PersonalPropertyModel,
-      CoinModel,
+      db: {
+        StockTradingModel,
+        StockTradingModelItem,
+        IdGen,
+        PersonalPropertyModel,
+        CoinModel,
+      },
       SocketClients: []
     };
   };
