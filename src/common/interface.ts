@@ -57,10 +57,27 @@ export interface ICreateStockTradingInput {
     investDate: Date
     profitPercent?: number
     averageStockPrice?: number
-    // createdAt?: Date
-    // updatedAt?: Date
-
 }
+
+export interface ICreateStockTradingItemInput {
+    _id: mongoose.Types.ObjectId
+    tradingKey: string
+    action: string
+    tradingTax: number
+    tradingAmount: number
+    tradingQuantity: number
+    closingPrice: number 
+}
+
+
+export interface ICreateStockTradingAgrs {
+    input: ICreateStockTradingInput
+}
+
+export interface ICreateStockTradingItemAgrs {
+    input: ICreateStockTradingItemInput
+}
+
 export interface IStockTradingItemFilter {
     tradingKey: string
 }
@@ -102,12 +119,11 @@ export interface IStockTradingItemModel extends mongoose.Document {
     tradingAmount: number
     tradingQuantity: number
     closingPrice: number
-    createdAt: Date
-    updatedAt: Date
+    createdAt?: Date
+    updatedAt?: Date
 }
 
 export interface APIServiceResp {
-    status: string
     statusCode: number
     pageInfo?: PageInfo
     message?: string

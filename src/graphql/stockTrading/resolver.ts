@@ -1,13 +1,13 @@
 import { RootFieldFilter } from 'graphql-tools';
 import StockService from '../../services/stock.service';
-import { IContext, ICreateStockTradingInput, IStockTradingItemParams, IStockTradingParams } from '../../common/interface';
+import { IContext, ICreateStockTradingAgrs, ICreateStockTradingItemAgrs, IStockTradingItemParams, IStockTradingParams } from '../../common/interface';
 
 export default {
   Query: {
-    stockTradingSessions: async (_: RootFieldFilter, args: IStockTradingParams, { db }: IContext) => {
+    StockTradingSession: async (_: RootFieldFilter, args: IStockTradingParams, { db }: IContext) => {
       const stockService = new StockService(db);
       const { filter = {}, limit = 10, offset = 0 } = args;
-      const { data, pageInfo } = await stockService.stockTradingSessions({ filter, limit, offset });
+      const { data, pageInfo } = await stockService.StockTradingSession({ filter, limit, offset });
       return {
         status: 200,
         message: 'Success',
@@ -29,9 +29,13 @@ export default {
     }
   },
   Mutation: {
-    createStockTrading: async (_: RootFieldFilter, args: ICreateStockTradingInput, { db }: IContext) => {
+    createStockTrading: async (_: RootFieldFilter, { input }: ICreateStockTradingAgrs, { db }: IContext) => {
       const stockService = new StockService(db);
-      return stockService.createStockTrading(args);
+      return stockService.createStockTrading(input);
+    },
+    createStockTradingItem: async (_: RootFieldFilter, { input }: ICreateStockTradingItemAgrs, { db }: IContext) => {
+      const stockService = new StockService(db);
+      return stockService.createStockTradingItem(input);
     }
   }
 };

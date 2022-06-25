@@ -8,11 +8,7 @@ export default mongoose.model<IStockTradingModel>('StockTrading', new mongoose.S
       type: String,
       required: true
     },
-    stock: {
-      type: String,
-      required: true
-    },
-    action: { // enum: Buy, Sell, AdditionBuy, SubtractionSell.
+    stockName: {
       type: String,
       required: true
     },
@@ -20,47 +16,22 @@ export default mongoose.model<IStockTradingModel>('StockTrading', new mongoose.S
       type: String,
       required: true
     },
-    stockTradeAmount: {
+    totalQuantity: {
       type: Number,
       required: true
     },
-    tradingTax: {
-      type: Number
-    },
-    totalStockTradeAmount: {
+    totalAmount: {
       type: Number,
       required: true
     },
-    stockTradePrice: {
-      type: Number,
-      required: true
-    },
-    dateStockTradePrice: {
-      type: Number
-    },
-    stockTotalTradePrice: {
-      type: Number,
-      required: true
-    },
-    closingPrice: {
-      type: Number,
+    investDate: {
+      type: Date,
       required: true
     },
     profitPercent: {
-      type: Number,
-      required: true
-    },
-    profitAmount: {
       type: Number
     },
-    paperProfitPercent: {
-      type: Number,
-      required: true
-    },
-    paperProfitAmount: {
-      type: Number
-    },
-    tradingFee: {
+    averageStockPrice: {
       type: Number
     },
     createdAt: {

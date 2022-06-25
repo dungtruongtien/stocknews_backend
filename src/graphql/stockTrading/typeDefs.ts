@@ -2,24 +2,57 @@ import { gql } from 'apollo-server-express';
 
 export default gql`
   extend type Query {
-    stockTradingSessions(filter: StockTradingSessionsFilterInput, limit: Int, offset: Int): StockTradingSessionsPayload
+    StockTradingSession(filter: StockTradingSessionFilterInput, limit: Int, offset: Int): StockTradingSessionPayload
     stockTradingItems(filter: StockTradingItemFilterInput, limit: Int, offset: Int): StockTradingItemPayload
   }
 
   extend type Mutation {
-    createStockTrading: String
+    createStockTrading(input: CreateStockTradingSessionInput!): CreateStockTradingSessionPayload
+    createStockTradingItem(input: CreateStockTradingItemInput!): CreateStockTradingItemPayload
+  }
+
+  input CreateStockTradingSessionInput {
+    stockName: String!
+    totalQuantity: Int!
+    totalAmount: Int!
+    status: String
+    investDate: Date
+    profitPercent: Int
+    averageStockPrice: Int
+  }
+
+  input CreateStockTradingItemInput {
+    tradingKey: String!
+    action: String!
+    tradingTax: Int!
+    tradingAmount: Int!
+    tradingQuantity: Int!
+    closingPrice: Int
+  }
+
+  type CreateStockTradingSessionPayload {
+    errorCode: String
+    statusCode: Int
+    message: String
+    data: StockTradingSession
+  }
+
+  type CreateStockTradingSessionPayload {
+    errorCode: String
+    statusCode: Int
+    message: String
+    data: StockTradingSession
   }
 
   input StockTradingItemFilterInput {
     tradingKey: String!
   }
 
-  input StockTradingSessionsFilterInput {
+  input StockTradingSessionFilterInput {
     stock: String
   }
 
   type StockTradingItemPayload {
-    status: Int
     message: String
     pageInfo: PageInfo
     data: [StockTradingItem]
@@ -37,14 +70,13 @@ export default gql`
     updatedAt: Date
   }
 
-  type StockTradingSessionsPayload {
-    status: Int
+  type StockTradingSessionPayload {
     message: String
     pageInfo: PageInfo
-    data: [StockTradingSessions]
+    data: [StockTradingSession]
   }
 
-  type StockTradingSessions {
+  type StockTradingSession {
     _id: String
     tradingKey: String
     stockName: String
