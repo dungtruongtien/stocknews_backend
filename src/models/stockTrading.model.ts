@@ -16,23 +16,9 @@ export default mongoose.model<IStockTradingModel>('StockTrading', new mongoose.S
       type: String,
       required: true
     },
-    totalQuantity: {
-      type: Number,
-      required: true
-    },
-    totalAmount: {
-      type: Number,
-      required: true
-    },
     investDate: {
       type: Date,
       required: true
-    },
-    profitPercent: {
-      type: Number
-    },
-    averageStockPrice: {
-      type: Number
     },
     createdAt: {
       type: Date,

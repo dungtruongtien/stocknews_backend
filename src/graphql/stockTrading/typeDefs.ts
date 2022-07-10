@@ -11,23 +11,22 @@ export default gql`
     createStockTradingItem(input: CreateStockTradingItemInput!): CreateStockTradingItemPayload
   }
 
+
   input CreateStockTradingSessionInput {
     stockName: String!
-    totalQuantity: Int!
-    totalAmount: Int!
-    status: String
-    investDate: Date
-    profitPercent: Int
-    averageStockPrice: Int
   }
 
   input CreateStockTradingItemInput {
     tradingKey: String!
-    action: String!
-    tradingTax: Int!
-    tradingAmount: Int!
-    tradingQuantity: Int!
-    closingPrice: Int
+    closingPrice: Int!
+    maximumBudget: Int
+    action: String
+    tradingAmount: Int
+    tradingQuantity: Int
+    tradingPrice: Int
+    tradingTax: Int
+    tradingFee: Int
+    totalTradingQuantity: Int
   }
 
   type CreateStockTradingSessionPayload {
@@ -37,7 +36,7 @@ export default gql`
     data: StockTradingSession
   }
 
-  type CreateStockTradingSessionPayload {
+  type CreateStockTradingItemPayload {
     errorCode: String
     statusCode: Int
     message: String

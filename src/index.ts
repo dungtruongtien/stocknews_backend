@@ -4,9 +4,7 @@ import { ApolloServer, PubSub } from 'apollo-server-express';
 import schema from './graphql';
 import StockTradingModel from './models/stockTrading.model';
 import IdGen from './models/idGen.model';
-import StockTradingModelItem from './models/stockTradingItem.model';
-import PersonalPropertyModel from './models/personalProperty.model';
-import CoinModel from './models/coin.model';
+import StockTradingItemModel from './models/stockTradingItem.model';
 import config from './config';
 import MongoConnection from './ext-lib/mongo';
 import EsClient from './ext-lib/es';
@@ -28,10 +26,8 @@ async function init() {
       pubsub,
       db: {
         StockTradingModel,
-        StockTradingModelItem,
-        IdGen,
-        PersonalPropertyModel,
-        CoinModel,
+        StockTradingItemModel,
+        IdGen
       },
       SocketClients: []
     };

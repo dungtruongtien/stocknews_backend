@@ -8,20 +8,16 @@ export default mongoose.model<IStockTradingItemModel>('StockTradingItem', new mo
       type: String,
       required: true
     },
-    action: { // enum: Buy, Sell, AdditionBuy, SubtractionSell.
+    maximumBudget: {
+      type: Number,
+      required: true
+    },
+    availabelBudget: {
+      type: Number,
+      required: true
+    },
+    action: { // enum: Buy, Sell 
       type: String,
-      required: true
-    },
-    tradingTax: {
-      type: Number,
-      required: true
-    },
-    totalTradingAmount: {
-      type: Number,
-      required: true
-    },
-    totalTradingQuantity: {
-      type: Number,
       required: true
     },
     tradingAmount: {
@@ -31,8 +27,43 @@ export default mongoose.model<IStockTradingItemModel>('StockTradingItem', new mo
       type: Number,
       required: true
     },
+    tradingPrice: { // Giá giao dịch cổ phiếu 
+      type: Number,
+      required: true
+    },
+    closingPrice: { // Giá giao dịch cổ phiếu 
+      type: Number,
+      required: true
+    },
+    tradingTax: {
+      type: Number
+    },
     tradingFee: {
       type: Number
+    },
+    profitAmount: { // tiền mặt lời lỗ theo lý thuyết 
+      type: Number,
+      required: true
+    },
+    profitPercent: { // % lời lỗ theo lý thuyết
+      type: Number,
+      required: true
+    },
+    totalProfitAmount: { // Tổng lời lỗ tiền mặt
+      type: Number,
+      required: true
+    },
+    totalTradingQuantity: { // Tổng số lượng cổ phiếu
+      type: Number,
+      required: true
+    },
+    totalCapital: { // Tổng vốn 
+      type: Number,
+      required: true
+    },
+    averageStockPrice: { // Giá trung bình mỗi cổ phiếu = totalTradingPrice / totalCapital // Không nhập
+      type: Number,
+      required: true
     },
     createdAt: {
       type: Date,

@@ -52,23 +52,8 @@ export interface ICreateStockTradingInput {
     tradingKey: string
     stockName: string
     status: string
-    totalQuantity: number
-    totalAmount: number
     investDate: Date
-    profitPercent?: number
-    averageStockPrice?: number
 }
-
-export interface ICreateStockTradingItemInput {
-    _id: mongoose.Types.ObjectId
-    tradingKey: string
-    action: string
-    tradingTax: number
-    tradingAmount: number
-    tradingQuantity: number
-    closingPrice: number 
-}
-
 
 export interface ICreateStockTradingAgrs {
     input: ICreateStockTradingInput
@@ -96,11 +81,7 @@ export interface IStockTradingModel extends mongoose.Document {
     tradingKey: string
     stockName: string
     status: string
-    totalQuantity: number
-    totalAmount: number
     investDate: Date
-    profitPercent?: number
-    averageStockPrice?: number
     createdAt?: Date
     updatedAt?: Date
 }
@@ -114,11 +95,42 @@ export interface IIdGenModel extends mongoose.Document {
 export interface IStockTradingItemModel extends mongoose.Document {
     _id: mongoose.Types.ObjectId
     tradingKey: string
-    action: string
-    tradingTax: number
+    closingPrice: number
+    maximumBudget: number
+    availabelBudget: number
+    action: number
     tradingAmount: number
     tradingQuantity: number
+    tradingPrice: number
+    tradingTax: number
+    tradingFee: number
+    profitAmount: number
+    profitPercent: number
+    totalProfitAmount: number
+    totalTradingQuantity: number
+    totalCapital: number
+    averageStockPrice: number
+    createdAt?: Date
+    updatedAt?: Date
+}
+
+export interface ICreateStockTradingItemInput {
+    tradingKey: string
     closingPrice: number
+    maximumBudget: number
+    availabelBudget: number
+    action: string
+    tradingAmount: number
+    tradingQuantity: number
+    tradingPrice: number
+    tradingTax: number
+    tradingFee: number
+    profitAmount: number
+    profitPercent: number
+    totalTradingQuantity: number
+    totalCapital: number
+    totalProfitAmount: number
+    averageStockPrice: number
     createdAt?: Date
     updatedAt?: Date
 }

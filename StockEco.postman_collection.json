@@ -1,0 +1,62 @@
+{
+	"info": {
+		"_postman_id": "d9d5e617-1a2c-4768-bf46-4c5bf07bc546",
+		"name": "StockEco",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21383830"
+	},
+	"item": [
+		{
+			"name": "Create Stock Trading Item",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation createStockTradingItem($input: CreateStockTradingItemInput!) {\n  createStockTradingItem(input: $input) {\n    statusCode\n    message\n    data {\n      _id\n      stockName\n    }\n  }\n}",
+						"variables": "{\n  \"input\":{\n    \"tradingKey\": \"NASAFE\",\n    \"closingPrice\": 27650,\n    \"maximumBudget\": 26000000,\n    \"action\": \"BUY\",\n    \"tradingAmount\": 23555700,\n    \"tradingQuantity\": 700,\n    \"tradingPrice\": 33651,\n    \"tradingTax\": 0,\n    \"tradingFee\": 0,\n    \"totalTradingQuantity\":700\n  }\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/stockiql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"stockiql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Stock Trading",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation createStockTrading($input: CreateStockTradingSessionInput!) {\n  createStockTrading(input: $input) {\n    statusCode\n    message\n    data {\n      _id\n      tradingKey\n      stockName\n    }\n  }\n}",
+						"variables": "{\n  \"input\":{\n    \"stockName\": \"VPB\"\n  }\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/stockiql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"stockiql"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
