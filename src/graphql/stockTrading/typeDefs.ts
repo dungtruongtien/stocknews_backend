@@ -2,7 +2,7 @@ import { gql } from 'apollo-server-express';
 
 export default gql`
   extend type Query {
-    StockTradingSession(filter: StockTradingSessionFilterInput, limit: Int, offset: Int): StockTradingSessionPayload
+    stockTrading(filter: StockTradingFilterInput, limit: Int, offset: Int): StockTradingPayload
     stockTradingItems(filter: StockTradingItemFilterInput, limit: Int, offset: Int): StockTradingItemPayload
   }
 
@@ -31,59 +31,67 @@ export default gql`
 
   type CreateStockTradingSessionPayload {
     errorCode: String
-    statusCode: Int
+    status: Int
     message: String
-    data: StockTradingSession
+    data: StockTrading
   }
 
   type CreateStockTradingItemPayload {
     errorCode: String
-    statusCode: Int
+    status: Int
     message: String
-    data: StockTradingSession
+    data: StockTrading
   }
 
   input StockTradingItemFilterInput {
     tradingKey: String!
   }
 
-  input StockTradingSessionFilterInput {
+  input StockTradingFilterInput {
     stock: String
   }
 
   type StockTradingItemPayload {
+    status: Int
     message: String
-    pageInfo: PageInfo
+    total: Int
     data: [StockTradingItem]
   }
 
   type StockTradingItem {
     _id: String
     tradingKey: String
+    closingPrice: Int
+    maximumBudget: Int
+    availabelBudget: Int
     action: String
-    tradingTax: Int
     tradingAmount: Int
     tradingQuantity: Int
-    closingPrice: Int
+    tradingPrice: Int
+    tradingTax: Int
+    tradingFee: Int
+    profitAmount: Int
+    profitPercent: Float
+    totalProfitAmount: Int
+    totalTradingQuantity: Int
+    totalCapital: Int
+    averageStockPrice: Int
     createdAt: Date
     updatedAt: Date
   }
 
-  type StockTradingSessionPayload {
+  type StockTradingPayload {
+    status: Int
     message: String
-    pageInfo: PageInfo
-    data: [StockTradingSession]
+    total: Int
+    data: [StockTrading]
   }
 
-  type StockTradingSession {
+  type StockTrading {
     _id: String
     tradingKey: String
     stockName: String
     status: String
-    profitPercent: Int
-    averageStockPrice: Int
-    totalStockTradeQuantity: Int
-    totalStockTradeAmount: Int
     investDate: Date
     createdAt: Date
     updatedAt: Date

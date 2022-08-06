@@ -4,28 +4,15 @@ import { IContext, ICreateStockTradingAgrs, ICreateStockTradingItemAgrs, IStockT
 
 export default {
   Query: {
-    StockTradingSession: async (_: RootFieldFilter, args: IStockTradingParams, { db }: IContext) => {
+    stockTrading: async (_: RootFieldFilter, args: IStockTradingParams, { db }: IContext) => {
       const stockService = new StockService(db);
       const { filter = {}, limit = 10, offset = 0 } = args;
-      const { data, pageInfo } = await stockService.StockTradingSession({ filter, limit, offset });
-      return {
-        status: 200,
-        message: 'Success',
-        data,
-        pageInfo
-      };
+      return stockService.stockTrading({ filter, limit, offset });
     },
     stockTradingItems: async (_: RootFieldFilter, args: IStockTradingItemParams, { db }: IContext) => {
       const { filter, limit = 10, offset = 0 } = args;
       const stockService = new StockService(db);
-      const dataResp = await stockService.getStockTradingItems({ filter, limit, offset });
-      if (!dataResp) return null;
-      return {
-        status: 200,
-        message: 'Success',
-        data: dataResp.data,
-        pageInfo: dataResp.pageInfo
-      };
+      return stockService.getStockTradingItems({ filter, limit, offset });
     }
   },
   Mutation: {

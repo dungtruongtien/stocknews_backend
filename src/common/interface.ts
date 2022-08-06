@@ -136,10 +136,10 @@ export interface ICreateStockTradingItemInput {
 }
 
 export interface APIServiceResp {
-    statusCode: number
-    pageInfo?: PageInfo
+    status: number
     message?: string
     data?: any
+    total?: number
     errorCode?: string
 }
 

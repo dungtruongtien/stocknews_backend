@@ -15,24 +15,43 @@ export default class StockService {
     this.DB = db;
   }
 
-  async StockTradingSession({ filter, limit, offset }: IStockTradingParams): Promise<APIServiceResp> {
+  async stockTrading({ filter, limit, offset }: IStockTradingParams): Promise<APIServiceResp> {
     const dataResp = await this.DB.StockTradingModel.find(filter).limit(limit).skip(offset);
+    if (!dataResp) {
+      return {
+        status: 404,
+        errorCode: "NOT_FOUND",
+        message: 'Not found any document',
+        data: [],
+        total: 0
+      };
+    }
     const total = await this.DB.StockTradingModel.count(filter).limit(limit).skip(offset);
     return {
-      statusCode: 200,
+      status: 200,
       message: "OK",
-      pageInfo: { total },
+      total: total || 0,
       data: dataResp
     };
   }
 
   async getStockTradingItems({ filter, limit, offset }: IStockTradingItemParams): Promise<APIServiceResp> {
     const result = await this.DB.StockTradingItemModel.find(filter).sort({ createdAt: -1 }).limit(limit).skip(offset);
+    console.log('result------', result)
+    if (!result) {
+      return {
+        status: 404,
+        errorCode: "NOT_FOUND",
+        message: 'Not found any document',
+        data: [],
+        total: 0
+      };
+    }
     const total = await this.DB.StockTradingItemModel.countDocuments(filter);
     return {
-      statusCode: 200,
+      status: 200,
       message: "OK",
-      pageInfo: { total },
+      total: total || 0,
       data: result
     };
   }
@@ -48,7 +67,7 @@ export default class StockService {
         return {
           errorCode: "Error",
           message: "Cannot create id gen",
-          statusCode: 500
+          status: 500
         }
       }
     } else {
@@ -58,7 +77,7 @@ export default class StockService {
         return {
           errorCode: "Error",
           message: "Cannot create id gen",
-          statusCode: 500
+          status: 500
         }
       }
     }
@@ -74,13 +93,13 @@ export default class StockService {
     if (!createStockTradingResp) {
       return {
         errorCode: "Error",
-        statusCode: 500,
+        status: 500,
         message: "Cannot create stock trading"
       }
     }
     return {
       errorCode: "OK",
-      statusCode: 200,
+      status: 200,
       message: "Create stock trading success",
       data: createStockTradingResp
     }
@@ -116,44 +135,57 @@ export default class StockService {
 
     // 1. Caculate totalCapital and tradingAmount
     if (input.tradingQuantity && input.tradingPrice) {
-      totalCapital = input.tradingQuantity * input.tradingPrice
       tradingAmount = input.tradingQuantity * input.tradingPrice
     }
 
     // 2. Caculate totalCapital && totalTradingQuantity && maximumBudget
     const latestStockTradingItemResp = await this.DB.StockTradingItemModel.find({ tradingKey: input.tradingKey }, null, { sort: { _id: -1 } }).limit(1).skip(0)
     if (latestStockTradingItemResp && latestStockTradingItemResp[0]) {
-      totalCapital += latestStockTradingItemResp[0].totalCapital
+      averageStockPrice = latestStockTradingItemResp[0].averageStockPrice
+      totalProfitAmount = latestStockTradingItemResp[0].totalProfitAmount
+      totalCapital = latestStockTradingItemResp[0].totalCapital
+      totalTradingQuantity = latestStockTradingItemResp[0].totalTradingQuantity
+
+      // 3. Caculate totalProfitAmount
+      if (input.action === "SELL" && input.tradingQuantity) {
+        const profitPercentBaseOnStockPrice = (input.tradingPrice - averageStockPrice) / averageStockPrice * 100
+        const profitAmountBaseOnStockPrice = totalCapital * profitPercentBaseOnStockPrice / 100
+        const stockSellQuantityPercent = input.tradingQuantity / totalTradingQuantity * 100
+        totalProfitAmount += profitAmountBaseOnStockPrice * stockSellQuantityPercent / 100
+      }
+
+      if (tradingAmount > 0 && input.action === "SELL") {
+        totalCapital = totalCapital - tradingAmount
+      }
+      if (tradingAmount > 0 && input.action === "BUY") {
+        totalCapital = totalCapital + tradingAmount
+      }
       maximumBudget = latestStockTradingItemResp[0].maximumBudget
       availabelBudget = latestStockTradingItemResp[0].availabelBudget
       if (input.action === "SELL") {
-        totalTradingQuantity -= latestStockTradingItemResp[0].totalTradingQuantity + tradingQuantity
+        totalTradingQuantity = latestStockTradingItemResp[0].totalTradingQuantity - tradingQuantity
       } else {
-        totalTradingQuantity += latestStockTradingItemResp[0].totalTradingQuantity + tradingQuantity
+        totalTradingQuantity = latestStockTradingItemResp[0].totalTradingQuantity + tradingQuantity
       }
     } else {
       totalTradingQuantity = input.tradingQuantity
       maximumBudget = input.maximumBudget
     }
 
-    // 3. Caculate availabelBudget
+    // 4. Caculate availabelBudget
     if (tradingAmount > 0) {
       if (input.action === "SELL" || input.action === "BUY") {
         availabelBudget = maximumBudget - totalCapital
       }
     }
 
-    // 4. Caculate averageStockPrice
+    // 5. Caculate averageStockPrice
     averageStockPrice = totalCapital / totalTradingQuantity
 
-    // 5. Caculate profitPercent && profitAmount 
+    // 6. Caculate profitPercent && profitAmount 
     let profitPercent = (input.closingPrice - averageStockPrice) / averageStockPrice * 100
     let profitAmount = (totalCapital * profitPercent / 100)
 
-    // 6. Caculate totalProfitAmount
-    if (input.action === "SELL" && input.tradingQuantity) {
-      totalProfitAmount = (profitAmount * (input.tradingQuantity / totalTradingQuantity * 100)) / 100
-    }
 
     // Reassign property to stockTradingItem
     stockTradingItem.totalCapital = totalCapital
@@ -165,13 +197,13 @@ export default class StockService {
     stockTradingItem.availabelBudget = availabelBudget
     stockTradingItem.totalProfitAmount = totalProfitAmount
     stockTradingItem.maximumBudget = maximumBudget,
-    stockTradingItem.totalCapital = totalCapital
+      stockTradingItem.totalCapital = totalCapital
 
     const createStockTradingItemResp = await this.DB.StockTradingItemModel.create(stockTradingItem)
     if (!createStockTradingItemResp) {
       return {
         errorCode: "Error",
-        statusCode: 500,
+        status: 500,
         message: "Cannot create stock trading item"
       }
     }
@@ -182,7 +214,7 @@ export default class StockService {
     }
     return {
       errorCode: "OK",
-      statusCode: 200,
+      status: 200,
       message: "Create stock trading item success",
       data: createStockTradingItemResp
     }
