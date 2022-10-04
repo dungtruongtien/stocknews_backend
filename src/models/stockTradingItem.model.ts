@@ -16,6 +16,10 @@ export default mongoose.model<IStockTradingItemModel>('StockTradingItem', new mo
       type: Number,
       required: true
     },
+    stockName: {
+      type: String,
+      required: true
+    },
     action: { // enum: Buy, Sell 
       type: String,
       required: true

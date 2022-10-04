@@ -98,6 +98,7 @@ export interface IStockTradingItemModel extends mongoose.Document {
     closingPrice: number
     maximumBudget: number
     availabelBudget: number
+    stockName: string
     action: number
     tradingAmount: number
     tradingQuantity: number
@@ -122,6 +123,7 @@ export interface ICreateStockTradingItemInput {
     action: string
     tradingAmount: number
     tradingQuantity: number
+    stockName: string
     tradingPrice: number
     tradingTax: number
     tradingFee: number

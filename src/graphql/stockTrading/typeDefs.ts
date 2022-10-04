@@ -21,6 +21,7 @@ export default gql`
     closingPrice: Int!
     maximumBudget: Int
     action: String
+    stockName: String
     tradingAmount: Int
     tradingQuantity: Int
     tradingPrice: Int
@@ -68,6 +69,7 @@ export default gql`
     tradingAmount: Int
     tradingQuantity: Int
     tradingPrice: Int
+    stockName: String
     tradingTax: Int
     tradingFee: Int
     profitAmount: Int

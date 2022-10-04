@@ -109,6 +109,7 @@ export default class StockService {
     const stockTradingItem: ICreateStockTradingItemInput = {
       tradingKey: input.tradingKey,
       closingPrice: input.closingPrice,
+      stockName: input.stockName,
       maximumBudget: input.maximumBudget || 0,
       action: input.action || "HOLD",
       tradingQuantity: input.tradingQuantity || 0,
@@ -172,6 +173,10 @@ export default class StockService {
       maximumBudget = input.maximumBudget
     }
 
+    if (!totalCapital) {
+      totalCapital = input.tradingAmount
+    }
+
     // 4. Caculate availabelBudget
     if (tradingAmount > 0) {
       if (input.action === "SELL" || input.action === "BUY") {
@@ -196,8 +201,10 @@ export default class StockService {
     stockTradingItem.totalTradingQuantity = totalTradingQuantity
     stockTradingItem.availabelBudget = availabelBudget
     stockTradingItem.totalProfitAmount = totalProfitAmount
-    stockTradingItem.maximumBudget = maximumBudget,
-      stockTradingItem.totalCapital = totalCapital
+    stockTradingItem.maximumBudget = maximumBudget
+    stockTradingItem.totalCapital = totalCapital
+
+    console.log('stockTradingItem-----', stockTradingItem)
 
     const createStockTradingItemResp = await this.DB.StockTradingItemModel.create(stockTradingItem)
     if (!createStockTradingItemResp) {
